@@ -4,25 +4,9 @@ import generateToken from "../utils/generateToken.js";
 
 export const signup = async (req, res) => {
   try {
-    const {
-      name,
-      email,
-      password,
-      profession,
-      annualIncome,
-      monthlyBudget,
-      yearlyBudget,
-    } = req.body;
+    const { fullname, email, password, country, phoneNo, gender } = req.body;
 
-    if (
-      !name ||
-      !email ||
-      !password ||
-      !profession ||
-      !annualIncome ||
-      !monthlyBudget ||
-      !yearlyBudget
-    ) {
+    if (!fullname || !email || !password || !country || !phoneNo || !gender) {
       return res.status(400).json({ message: "Please fill in all fields." });
     }
 
@@ -35,25 +19,23 @@ export const signup = async (req, res) => {
     }
 
     const newUser = await User.create({
-      name,
+      fullname,
       email,
       password,
-      profession,
-      annualIncome,
-      monthlyBudget,
-      yearlyBudget,
+      country,
+      phoneNo,
+      gender,
     });
 
     if (newUser) {
       const token = generateToken(newUser._id);
       res.status(201).json({
         _id: newUser._id,
-        name: newUser.name,
+        fullname: newUser.fullname,
         email: newUser.email,
-        profession: newUser.profession,
-        annualIncome: newUser.annualIncome,
-        monthlyBudget: newUser.monthlyBudget,
-        yearlyBudget: newUser.yearlyBudget,
+        country: newUser.country,
+        phoneNo: newUser.phoneNo,
+        gender: newUser.gender,
         token,
       });
     } else {
@@ -65,21 +47,22 @@ export const signup = async (req, res) => {
   }
 };
 
-
-
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      user?.password || ""
+    );
     if (!user || !isPasswordCorrect) {
       return res.status(401).json({ message: "Invalid email or password." });
     }
     const token = generateToken(user._id);
     res.status(200).json({
       _id: user._id,
-      name: user.name,
+      fullname: user.fullname,
       email: user.email,
       token,
     });

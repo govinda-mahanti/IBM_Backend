@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    fullname: {
       type: String,
       required: true,
     },
@@ -20,24 +20,20 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
 
-    profession: {
+    country: {
       type: String,
       required: true,
     },
 
-    annualIncome: {
-      type: Number,
+    phoneNo: {
+      type: String,
       required: true,
     },
-
-    monthlyBudget: {
-      type: Number,
-      default: 0,
-    },
-
-    yearlyBudget: {
-      type: Number,
-      default: 0,
+    /*   profilePic: { type: String }, */
+    gender: {
+      type: String,
+      enum: ["Male", "Female", "Other"],
+      required: true,
     },
   },
   { timestamps: true }
@@ -56,6 +52,3 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 
 const User = mongoose.model("User", userSchema);
 export default User;
-
-
-
