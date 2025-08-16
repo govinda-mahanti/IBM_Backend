@@ -18,10 +18,14 @@ export const signup = async (req, res) => {
         .json({ message: "User already exists with this email." });
     }
 
+    // 🔑 Hash password before saving
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     const newUser = await User.create({
       fullname,
       email,
-      password,
+      password: hashedPassword,
       country,
       phoneNo,
       gender,
