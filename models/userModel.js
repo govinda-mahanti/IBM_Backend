@@ -35,6 +35,11 @@ const userSchema = new mongoose.Schema(
       enum: ["Male", "Female", "Other"],
       required: true,
     },
+    /*subscription: {
+    plan: { type: String }, 
+    startDate: { type: Date },
+    endDate: { type: Date }
+  }, */
   },
   { timestamps: true }
 );
